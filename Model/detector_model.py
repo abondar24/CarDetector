@@ -89,7 +89,7 @@ model = create_model(input_shape, train_data_frame['class'].nunique())
 
 # Compile the model
 model.compile(optimizer=AdamLegacy(learning_rate=0.0001),
-              loss='categorical_crossentropy',
+              loss='mean_squared_error',
               metrics=['accuracy'])
 
 # Train the model
