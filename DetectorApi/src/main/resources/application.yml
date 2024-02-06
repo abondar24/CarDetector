@@ -1,0 +1,11 @@
+#Tue Feb 06 13:43:22 UTC 2024
+micronaut:
+  route:
+    static-resources.swagger:
+       paths: classpath\:META-INF/swagger
+       mapping: /swagger/**
+    static-resources:
+      swagger-ui: mapping=/swagger-ui/**
+      paths: classpath\:META-INF/swagger/views/swagger-ui
+  application:
+    name: detectorAPI
