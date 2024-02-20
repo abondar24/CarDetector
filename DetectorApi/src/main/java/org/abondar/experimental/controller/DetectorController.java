@@ -22,13 +22,15 @@ public class DetectorController {
     @Inject
     private DetectorService detectorService;
 
-    @Post(uri = "/", produces = "text/plain")
+    @Post(produces = "text/plain")
     @Operation(summary = "Detect a car", description = "Detect a car model by image")
     @ApiResponse(
             content = @Content(mediaType = "application/json", schema = @Schema(type = "DetectorResponse"))
     )
     @ApiResponse(responseCode = "200",description = "Car Detected")
+    @ApiResponse(responseCode = "400",description = "Error reading image file")
     @ApiResponse(responseCode = "404",description = "Car Not Detected")
+    @ApiResponse(responseCode = "502",description = "Error accessing model")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<DetectorResponse> detectCar(@Part StreamingFileUpload file) throws IOException {
