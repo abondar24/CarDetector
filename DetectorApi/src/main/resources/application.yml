@@ -9,3 +9,8 @@ micronaut:
       paths: classpath\:META-INF/swagger/views/swagger-ui
   application:
     name: detectorAPI
+
+
+detector:
+  model: ../Model/car_detection_model.keras
+  annotations: ../Model/Data/train/_annotations.csv
