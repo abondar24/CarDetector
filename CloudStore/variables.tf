@@ -3,7 +3,7 @@ variable region {
 }
 
 variable "detector_bucket" {
-  default = "catDetector"
+  default = "car-detector-ai"
 }
 
 variable "model_file" {
@@ -11,11 +11,11 @@ variable "model_file" {
 }
 
 variable "model_path" {
-  default = "../Model/"
+  default = "../Model"
 }
 
 variable "annotations_path" {
-  default = "../Model/"
+  default = "../Model"
 }
 
 variable "annotations_file" {
