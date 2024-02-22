@@ -30,6 +30,7 @@ public class DetectorController {
     @ApiResponse(responseCode = "200",description = "Car Detected")
     @ApiResponse(responseCode = "400",description = "Error reading image file")
     @ApiResponse(responseCode = "404",description = "Car Not Detected")
+    @ApiResponse(responseCode = "501",description = "Error processing model")
     @ApiResponse(responseCode = "502",description = "Error accessing model")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,13 +38,7 @@ public class DetectorController {
         var tempFile = File.createTempFile("uploaded-image", ".jpg");
         file.transferTo(tempFile);
 
-        var resp = detectorService.detectModel(tempFile);
-        if (resp.carModel()==null && resp.error().equals(Messages.CAR_NOT_FOUND.getMsg())){
-            return HttpResponse.notFound(resp);
-        }
-
-        //TODO handle additional cases
-
+        var resp = detectorService.detectCarModel(tempFile);
         return HttpResponse.ok(resp);
     }
 }

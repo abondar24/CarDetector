@@ -6,6 +6,5 @@ import io.micronaut.serde.annotation.Serdeable;
 @Introspected
 @Serdeable
 public record DetectorResponse (
-        String carModel,
-        String error
+        String carModel
 ){}
