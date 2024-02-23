@@ -25,7 +25,7 @@ public class DetectorController {
         this.detectorService = detectorService;
     }
 
-    @Post(produces = "text/plain")
+    @Post
     @Operation(summary = "Detect a car", description = "Detect a car model by image")
     @ApiResponse(
             content = @Content(mediaType = "application/json", schema = @Schema(type = "DetectorResponse"))
@@ -37,7 +37,7 @@ public class DetectorController {
     @ApiResponse(responseCode = "502",description = "Error accessing model")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<DetectorResponse> detectCar(@Part StreamingFileUpload file) throws IOException {
+    public HttpResponse<DetectorResponse> detectCar(StreamingFileUpload file) throws IOException {
         var tempFile = File.createTempFile("uploaded-image", ".jpg");
         file.transferTo(tempFile);
 
