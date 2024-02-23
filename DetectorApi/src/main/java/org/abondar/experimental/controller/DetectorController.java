@@ -19,8 +19,11 @@ import java.io.IOException;
 @Controller("/detector")
 public class DetectorController {
 
-    @Inject
-    private DetectorService detectorService;
+    private final DetectorService detectorService;
+
+    public DetectorController(DetectorService detectorService){
+        this.detectorService = detectorService;
+    }
 
     @Post(produces = "text/plain")
     @Operation(summary = "Detect a car", description = "Detect a car model by image")

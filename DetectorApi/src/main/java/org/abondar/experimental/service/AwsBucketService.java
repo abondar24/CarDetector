@@ -22,13 +22,16 @@ public class AwsBucketService implements StorageService {
 
     private static final Logger log = LoggerFactory.getLogger(AwsBucketService.class);
 
-    @Inject
-    private DetectorConfiguration configuration;
+    private final DetectorConfiguration configuration;
 
     private final AmazonS3 s3Client;
 
-    public AwsBucketService() {
-        this.s3Client = AmazonS3ClientBuilder.defaultClient();
+    public AwsBucketService(DetectorConfiguration configuration) {
+        this.configuration = configuration;
+        this.s3Client = AmazonS3ClientBuilder
+                .standard()
+                .withRegion(configuration.region())
+                .build();
     }
 
 
@@ -48,8 +51,9 @@ public class AwsBucketService implements StorageService {
             return annotations;
         } catch (IOException ex) {
             log.error(ex.getMessage());
-            throw new ModelNotReadyException();
         }
+
+        return null;
     }
 
     @Override
@@ -69,8 +73,8 @@ public class AwsBucketService implements StorageService {
             return buffer;
         } catch (IOException ex) {
             log.error(ex.getMessage());
-            throw new ModelNotReadyException();
         }
 
+        return null;
     }
 }

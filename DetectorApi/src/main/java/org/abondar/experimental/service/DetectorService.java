@@ -3,6 +3,7 @@ package org.abondar.experimental.service;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.abondar.experimental.exception.ModelNotReadyException;
 import org.abondar.experimental.exception.ModelProcessingException;
 import org.abondar.experimental.model.DetectorResponse;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -29,12 +30,15 @@ public class DetectorService {
 
     private static final Logger log = LoggerFactory.getLogger(DetectorService.class);
 
-    @Inject
-    StorageService storageService;
+    private final StorageService storageService;
 
     private List<String> annotations;
 
     private ByteBuffer model;
+
+    public DetectorService(StorageService storageService) {
+        this.storageService = storageService;
+    }
 
     @PostConstruct
     public void downloadModel(){
@@ -43,6 +47,10 @@ public class DetectorService {
     }
 
     public DetectorResponse detectCarModel(File image){
+
+        if (model==null ||annotations==null){
+            throw new ModelNotReadyException();
+        }
 
         try {
             var input = preprocessImage(image);

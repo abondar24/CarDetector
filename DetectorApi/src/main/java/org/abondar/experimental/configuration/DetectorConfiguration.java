@@ -8,6 +8,7 @@ import io.micronaut.core.annotation.Introspected;
 public record DetectorConfiguration (
         String model,
         String annotations,
+        String bucket,
 
-        String bucket
+        String region
 ){}
