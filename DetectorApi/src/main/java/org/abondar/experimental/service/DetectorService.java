@@ -1,11 +1,10 @@
 package org.abondar.experimental.service;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.abondar.experimental.exception.ModelNotReadyException;
 import org.abondar.experimental.exception.ModelProcessingException;
 import org.abondar.experimental.model.DetectorResponse;
+import org.abondar.experimental.store.ModelStore;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -23,30 +22,22 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import static org.abondar.experimental.service.ImageUtil.*;
+import static org.abondar.experimental.util.ImageUtil.*;
 
 @Singleton
 public class DetectorService {
 
+    private final ModelStore modelStore;
+
+    public DetectorService(ModelStore modelStore) {
+        this.modelStore = modelStore;
+    }
+
     private static final Logger log = LoggerFactory.getLogger(DetectorService.class);
 
-    private final StorageService storageService;
-
-    private List<String> annotations;
-
-    private ByteBuffer model;
-
-    public DetectorService(StorageService storageService) {
-        this.storageService = storageService;
-    }
-
-    @PostConstruct
-    public void downloadModel(){
-        this.annotations = storageService.downloadAnnotations();
-        this.model = storageService.downloadModel();
-    }
-
     public DetectorResponse detectCarModel(File image){
+        var model = modelStore.getModel();
+        var annotations = modelStore.getAnnotations();
 
         if (model==null ||annotations==null){
             throw new ModelNotReadyException();
@@ -57,7 +48,7 @@ public class DetectorService {
             var networkModel = convertModel(model);
             var output = networkModel.output(input);
 
-            var carModel = getClassFromOutput(output);
+            var carModel = getClassFromOutput(output,annotations);
 
             return new DetectorResponse(carModel);
         } catch (IOException ex){
@@ -105,7 +96,7 @@ public class DetectorService {
         return resizedImage;
     }
 
-    private String getClassFromOutput(INDArray output) {
+    private String getClassFromOutput(INDArray output, List<String> annotations) {
         // Find the index of the maximum value in the output array
         int maxIdx = Nd4j.argMax(output).getInt(0);
 

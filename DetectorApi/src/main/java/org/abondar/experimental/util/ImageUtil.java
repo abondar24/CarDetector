@@ -1,4 +1,4 @@
-package org.abondar.experimental.service;
+package org.abondar.experimental.util;
 
 public class ImageUtil {
 

@@ -38,6 +38,7 @@ public class AwsBucketService implements StorageService {
     @Override
     public List<String> downloadAnnotations() {
         try {
+            log.info("Downloading annotations");
             var annotationObject = s3Client.getObject(new GetObjectRequest(configuration.bucket(), configuration.annotations()));
             var annotationStream = annotationObject.getObjectContent();
             List<String> annotations = new ArrayList<>();
@@ -59,6 +60,7 @@ public class AwsBucketService implements StorageService {
     @Override
     public ByteBuffer downloadModel() {
         try {
+            log.info("Downloading data model");
             var modelObject = s3Client.getObject(new GetObjectRequest(configuration.bucket(), configuration.annotations()));
             var modelStream = modelObject.getObjectContent();
 
