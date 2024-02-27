@@ -9,7 +9,7 @@ import java.util.List;
 public class ModelStore{
 
    private List<String> annotations;
-   private   ByteBuffer model;
+   private byte[] model;
 
     public List<String> getAnnotations() {
         return annotations;
@@ -19,11 +19,11 @@ public class ModelStore{
         this.annotations = annotations;
     }
 
-    public ByteBuffer getModel() {
+    public byte[] getModel() {
         return model;
     }
 
-    public void setModel(ByteBuffer model) {
+    public void setModel(byte[] model) {
         this.model = model;
     }
 }

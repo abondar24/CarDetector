@@ -3,17 +3,15 @@ package org.abondar.experimental.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.abondar.experimental.configuration.DetectorConfiguration;
-import org.abondar.experimental.exception.ModelNotReadyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,21 +56,20 @@ public class AwsBucketService implements StorageService {
     }
 
     @Override
-    public ByteBuffer downloadModel() {
+    public byte[] downloadModel() {
         try {
             log.info("Downloading data model");
             var modelObject = s3Client.getObject(new GetObjectRequest(configuration.bucket(), configuration.annotations()));
             var modelStream = modelObject.getObjectContent();
 
-            ByteBuffer buffer = ByteBuffer.allocateDirect((int) modelObject.getObjectMetadata().getContentLength());
-            byte[] data = new byte[1024];
+            var outStream = new ByteArrayOutputStream();
+            byte[] model = new byte[1024];
             int bytesRead;
-            while ((bytesRead = modelStream.read(data)) != -1) {
-                buffer.put(data, 0, bytesRead);
+            while ((bytesRead = modelStream.read(model)) != -1) {
+                outStream.write(model,0,bytesRead);
             }
-            buffer.rewind();
 
-            return buffer;
+            return model;
         } catch (IOException ex) {
             log.error(ex.getMessage());
         }

@@ -9,5 +9,5 @@ public interface StorageService {
 
     List<String> downloadAnnotations() throws ModelNotReadyException;
 
-    ByteBuffer downloadModel() throws ModelNotReadyException;
+    byte[] downloadModel() throws ModelNotReadyException;
 }
