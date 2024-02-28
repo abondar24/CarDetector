@@ -1,0 +1,16 @@
+# Test your FastAPI endpoints
+
+GET http://127.0.0.1:8000/health
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8000/detectir
+Accept: multipart/form-data; boundary=----MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="image"; filename="my_image.jpg"
+
+[Image content in binary format goes here]
+--MyBoundary--
+###

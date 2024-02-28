@@ -17,10 +17,7 @@ async def root():
 async def detector(image: UploadFile):
     try:
         content = await image.read()
-        with open(image.filename, "wb") as buffer:
-            buffer.write(content)
-
-        car_model = classify_image(buffer, model_data, annotations_df)
+        car_model = classify_image(content, model_data, annotations_df)
 
     except Exception:
         return {"message": "There was an error uploading the file"}
