@@ -5,7 +5,7 @@ from s3_client import download_data_from_bucket
 
 model_data, annotations_df = download_data_from_bucket()
 
-app = FastAPI()
+app = FastAPI(swagger_ui_parameters={"syntaxHighlight": False})
 
 
 @app.get("/health")
