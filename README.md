@@ -5,5 +5,9 @@ Tiny Car Detector
 - [Model](Model/README.md)
 - [CloudStore](CloudStore/README.md)
 - [DetectorAPI](DetectorApi/README.md)
+- [DetectprAPI python](DetectorApiPython/README.md)
 
+## Notes
+
+- Detector API is not finished due to issues with terraform library for java. Completing is supposed to be done once api is released
 
