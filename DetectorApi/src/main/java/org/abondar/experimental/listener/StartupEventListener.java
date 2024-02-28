@@ -5,7 +5,6 @@ import io.micronaut.runtime.event.annotation.EventListener;
 import jakarta.inject.Singleton;
 import org.abondar.experimental.service.StorageService;
 import org.abondar.experimental.store.ModelStore;
-import org.nd4j.enums.Mode;
 
 @Singleton
 public class StartupEventListener {
