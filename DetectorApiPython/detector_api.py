@@ -1,4 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
+from s3_client import download_data_from_bucket
+
+model_data, annotations_df = download_data_from_bucket()
 
 app = FastAPI()
 
