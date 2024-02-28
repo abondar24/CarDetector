@@ -1,8 +1,11 @@
 import io
+import logging
 import os
 
 import boto3
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 detector_model = "car_detection_model.keras"
 detector_annotations = "_annotations.csv"
@@ -26,20 +29,20 @@ s3_client = boto3.client(
 def download_data_from_bucket():
     try:
         response = s3_client.get_object(Bucket=aws_bucket, Key=detector_model)
-        print("Downloading model")
+        logger.info("Downloading model")
         with response['Body'] as data:
             model = data.read()
 
         response = s3_client.get_object(Bucket=aws_bucket, Key=detector_annotations)
-        print("Downloading annotations")
+        logger.info("Downloading annotations")
         with response['Body'] as data:
             annotation_data = io.BytesIO(data.read())
             annotation_df = pd.read_csv(annotation_data)
 
-        print(f"Downloaded file '{detector_model}' successfully!")
-        print(f"Downloaded and converted file '{detector_annotations}' to pandas DataFrame successfully!")
+        logger.info(f"Downloaded file '{detector_model}' successfully!")
+        logger.info(f"Downloaded and converted file '{detector_annotations}' to pandas DataFrame successfully!")
         return model, annotation_df
 
     except ConnectionError as e:
-        print(f"Error downloading data: {e}")
+        logger.info(f"Error downloading data: {e}")
         return None, None
