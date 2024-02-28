@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, HTTPException
+from fastapi.responses import JSONResponse
 import logging
 from detector_service import classify_image
 from s3_client import download_data_from_bucket
@@ -21,17 +22,25 @@ async def detector(image: UploadFile):
         content = await image.read()
         car_model = classify_image(content, model_data, annotations_df)
 
-    except UploadFile.errors.ASGIHTTPException as e:
-        logger.error(f"Error reading uploaded file: {e}")
-        raise HTTPException(status_code=400, detail="Error reading uploaded image")
-    except ConnectionError as e:
-        logger.error(f"Error downloading model: {e}")
-        raise HTTPException(status_code=502, detail="Error reading uploaded image")
-    except Exception as e:
-        logger.exception(f"Unexpected error: {e}")  # Log full traceback for unexpected errors
-        raise HTTPException(status_code=500, detail="Internal server error")
-
 
     finally:
         image.file.close()
     return {"carModel": f"{car_model}"}
+
+
+@app.exception_handler(ConnectionError)
+async def connection_error_handler(exc: ConnectionError):
+    logger.error(f"Error downloading model: {exc}")
+    return JSONResponse(
+        status_code=400,
+        content={"message": f"OError downloading model: {exc}"},
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(exc: HTTPException):
+    logger.error(f"Error downloading model: {exc}")
+    return JSONResponse(
+        status_code=600,
+        content={"message": f"OInternal server error: {exc}"},
+    )
