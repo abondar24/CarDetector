@@ -15,8 +15,3 @@ pip install -r requirements.txt
 
 ## API reference
 Swagger UI available here: localhost:8000/docs
-
-## TODO
-- docker setup
-- aws deployment via terraform
-- github action for deploy
