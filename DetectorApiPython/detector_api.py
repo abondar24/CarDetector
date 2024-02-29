@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 import logging
@@ -6,7 +8,7 @@ from s3_client import download_data_from_bucket
 
 logger = logging.getLogger(__name__)
 
-model_data, annotations_df = download_data_from_bucket()
+annotations_df = download_data_from_bucket()
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": False})
 
@@ -20,12 +22,16 @@ async def root():
 async def detector(image: UploadFile):
     try:
         content = await image.read()
-        car_model = classify_image(content, model_data, annotations_df)
+        with open('image.jpg', 'wb') as f:
+            f.write(content)
 
+        car_model, probability = classify_image(annotations_df)
 
     finally:
         image.file.close()
-    return {"carModel": f"{car_model}"}
+        os.remove('image.jpg')
+
+    return {"carModel": f"{car_model}","probability": f"{probability:.2f}"}
 
 
 @app.exception_handler(ConnectionError)
