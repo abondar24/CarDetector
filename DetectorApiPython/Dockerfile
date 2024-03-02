@@ -1,12 +1,12 @@
-FROM python:3.9-alpine
+FROM python:3.11
 
-RUN apk add --no-cache gcc g++
+#RUN apk add --no-cache gcc g++
 
 # Set the working directory
 WORKDIR /app
 
 # Copy requirements.txt
-COPY requirements.txt ./
+COPY requirements-docker.txt ./requirements.txt
 
 # Install dependencies from requirements.txt
 RUN pip install -r requirements.txt
