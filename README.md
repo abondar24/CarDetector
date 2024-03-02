@@ -3,7 +3,7 @@ Tiny Car Detector
 
 ## Modules
 - [Model](Model/README.md)
-- [CloudStore](CloudStore/README.md)
+- [CloudResources](CloudStore/README.md)
 - [DetectorAPI](DetectorApi/README.md)
 - [DetectprAPI python](DetectorApiPython/README.md)
 
