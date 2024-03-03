@@ -20,5 +20,12 @@ pip install -r requirements.txt
  docker run -itd -p 8000:8000 --name ss-213 -e=AWS_ACCESS_KEY_ID=key_id -e=AWS_ACCESS_KEY=key  cardetector 
 ```
 
+### AWS tagging and pusing
+```
+docker tag cardetector:latest <iam-id>.dkr.ecr.<region>.amazonaws.com/cardetector:latest
+
+docker push <with>
+```
+
 ## API reference
 Swagger UI available here: localhost:8000/docs

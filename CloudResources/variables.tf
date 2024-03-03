@@ -21,3 +21,7 @@ variable "annotations_path" {
 variable "annotations_file" {
   default = "_annotations.csv"
 }
+
+variable "ecr_repo" {
+  default = "cardetector"
+}
