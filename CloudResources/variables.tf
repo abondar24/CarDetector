@@ -25,3 +25,15 @@ variable "annotations_file" {
 variable "ecr_repo" {
   default = "cardetector"
 }
+
+variable "ecs_cluster" {
+  default = "car-detector-cluster"
+}
+
+variable "ecs_def_family" {
+  default = "deploy-detector-definition"
+}
+
+variable "ecs_service_name" {
+  default = "car-detector-service"
+}
